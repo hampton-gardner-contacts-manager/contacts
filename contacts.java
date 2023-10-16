@@ -49,8 +49,16 @@ public class contacts {
                boolean check = false;
                System.out.println("Enter a name:");
                String newContact = input.nextLine();
-               System.out.printf("Enter %s's number:%n", newContact);
+               System.out.printf("Enter %s's number(xxx-xxx-xxxx Format):%n", newContact);
                String contactNumber = input.nextLine();
+
+
+               String tenDigitPattern = "\\d{3}-\\d{3}-\\d{4}";
+               String sevenDigitPattern = "\\d{3}-\\d{4}";
+               while (!contactNumber.matches(tenDigitPattern)&& !contactNumber.matches(sevenDigitPattern)){
+                   System.out.println("Invalid Format, try again");
+                   contactNumber= input.nextLine();
+               }
                String contactInfo = newContact + " : " + contactNumber;
                if(contactList.size()==0){
                    contactList.add(contactInfo);
@@ -99,7 +107,7 @@ public class contacts {
                for (String contact : contactList) {
                    String [] contactArray = contact.split(" : ");
                    contactName = contactArray[0];
-                   if (!contactName.equals(newContact)) {
+                   if (!contactName.equalsIgnoreCase(newContact)) {
                        tempList.add(contact);
                    }
                }
