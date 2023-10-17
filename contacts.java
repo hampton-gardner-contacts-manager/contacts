@@ -1,17 +1,17 @@
+import javax.xml.namespace.QName;
 import java.io.IOException;
-import java.nio.*;
-import java.io.File.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
-import java.sql.SQLOutput;
 import java.util.*;
 
-
 public class contacts {
-
-
+    public String name;
+    public String phonenumber;
+    public contacts(String name,String phonenumber){
+        this.name = name;
+        this.phonenumber = phonenumber;
+    }
     public static void showContacts (List<String> contact) {
         String name = "Name";
         String phoneNumber = "Phone Number";
@@ -20,6 +20,7 @@ public class contacts {
         for (String person : contact) {
             String [] personArray = person.split(" : ");
             System.out.printf("%-15s | %-15s |%n", personArray[0], personArray[1]);
+            contacts newcontact = new contacts(personArray[0],personArray[1]);
         }
 
     }
@@ -54,9 +55,9 @@ public class contacts {
         for (String contact : contactList) {
             tempList.add(contact);
             String [] contactArray = contact.split(" : ");
+            contacts newcontact = new contacts(contactArray[0],contactArray[1]);
             phoneNumber = contactArray[1];
             if (!phoneNumber.equals(contactNumber)) {
-                System.out.println("Phone Number checks out");
                 check=true;
             }
 
@@ -122,6 +123,7 @@ public class contacts {
                String searchChoice = input.nextLine();
                for (String contact : contactList) {
                    String [] contactArray = contact.split(" : ");
+                   contacts newcontact = new contacts(contactArray[0],contactArray[1]);
                    contactName = contactArray[0];
                    if (contactName.equalsIgnoreCase(searchChoice)) {
                        System.out.printf("Here is your contact, %s%n",contact);
@@ -140,6 +142,7 @@ public class contacts {
 
                for (String contact : contactList) {
                    String [] contactArray = contact.split(" : ");
+                   contacts newcontact = new contacts(contactArray[0],contactArray[1]);
                    contactName = contactArray[0];
                    if (!contactName.equalsIgnoreCase(newContact)) {
                        tempList.add(contact);
