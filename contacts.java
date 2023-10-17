@@ -31,13 +31,6 @@ public class contacts {
         System.out.printf("Enter %s's number:%n>", newContact);
         String contactNumber = input.nextLine();
 
-
-//        String tenDigitPattern = "\\d{3}-\\d{3}-\\d{4}";
-//        String sevenDigitPattern = "\\d{3}-\\d{4}";
-//        while (!contactNumber.matches(tenDigitPattern)&& !contactNumber.matches(sevenDigitPattern)){
-//            System.out.println("Invalid Format, try again");
-//            contactNumber= input.nextLine();
-//        }
         while (contactNumber.length()!=10&&contactNumber.length()!=7){
             System.out.println("Invalid Format, try again");
             contactNumber= input.nextLine();
@@ -66,11 +59,7 @@ public class contacts {
                 System.out.println("Phone Number checks out");
                 check=true;
             }
-//                   else {
-//                       check=false;
-//                       System.out.println("Existing Phone Number");
-//                       break;
-//                   }
+
             if (newContact.equalsIgnoreCase(contactArray[0])){
                 System.out.printf("There's already an existing contact with the name %s. Do you wish to overwrite it? (Y/N?)",newContact);
                 String choice = input.nextLine();
