@@ -97,6 +97,7 @@ public class contactsmethods {
     }
     public static void deleteContact(List<String> contactList,Scanner input,String contactName,Path file) throws IOException {
         List<String> tempList = new ArrayList<>();
+        boolean flag=true;
         showContacts(contactList);
         System.out.print("Enter a name:\n>");
         String newContact = input.nextLine();
@@ -108,10 +109,20 @@ public class contactsmethods {
             if (!contactName.equalsIgnoreCase(newContact)) {
                 tempList.add(contact);
             }
+            if (contactName.equalsIgnoreCase(newContact)){
+                System.out.println("Contact deleted");
+                flag=false;
+            }
         }
-        contactList = tempList;
-        Files.write(file, tempList);
-        System.out.println("Contact deleted");
+        if (flag){
+            System.out.println("Input name not found");
+            deleteContact(contactList, input, contactName, file);
+            contactList = tempList;
+            Files.write(file, tempList);
+        }else {
+            contactList = tempList;
+            Files.write(file, tempList);
+        }
     }
 
 }
