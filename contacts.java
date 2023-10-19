@@ -5,178 +5,70 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
-public class contacts {
+public class contacts extends contactsmethods{
     public String name;
     public String phonenumber;
     public contacts(String name,String phonenumber){
         this.name = name;
         this.phonenumber = phonenumber;
     }
-    public static void showContacts (List<String> contact) {
-        String name = "Name";
-        String phoneNumber = "Phone Number";
-        System.out.printf("%-15s | %-15s |%n-----------------------------------%n", name, phoneNumber);
-        contact.sort(Comparator.naturalOrder());
-        for (String person : contact) {
-            String [] personArray = person.split(" : ");
-            System.out.printf("%-15s | %-15s |%n", personArray[0], personArray[1]);
-            contacts newcontact = new contacts(personArray[0],personArray[1]);
-        }
-
-    }
-    public static void addContacts(List<String> contactList,Path file,Scanner input,String phoneNumber) throws IOException {
-        List<String> tempList = new ArrayList<>();
-        boolean check = false;
-        System.out.println("Enter a name:\n>");
-        String newContact = input.nextLine();
-        System.out.printf("Enter %s's number:%n>", newContact);
-        String contactNumber = input.nextLine();
-
-        while (contactNumber.length()!=10&&contactNumber.length()!=7){
-            System.out.println("Invalid Format, try again");
-            contactNumber= input.nextLine();
-        }
-        if(contactNumber.length()==10){
-            String first = contactNumber.substring(0,3);
-            String second = contactNumber.substring(3,6);
-            String third = contactNumber.substring(6,10);
-            contactNumber = first+"-"+second+"-"+third;
-        }
-        if (contactNumber.length()==7){
-            String first = contactNumber.substring(0,3);
-            String second = contactNumber.substring(3,7);
-            contactNumber = first+"-"+second;
-        }
-
-        String contactInfo = newContact + " : " + contactNumber;
-        if(contactList.size()==0){
-            contactList.add(contactInfo);
-        }
-        for (String contact : contactList) {
-            tempList.add(contact);
-            String [] contactArray = contact.split(" : ");
-            contacts newcontact = new contacts(contactArray[0],contactArray[1]);
-            phoneNumber = contactArray[1];
-            if (!phoneNumber.equals(contactNumber)) {
-                check=true;
-            }
-
-            if (newContact.equalsIgnoreCase(contactArray[0])){
-                System.out.printf("There's already an existing contact with the name %s. Do you wish to overwrite it? (Y/N?)",newContact);
-                String choice = input.nextLine();
-                if (choice.contains("y")){
-                    tempList.remove(contact);
-                    check=true;
-                }
-                else{
-                    addContacts(contactList,file,input,phoneNumber);
-                    check=false;
-                    break;
-                }
-            }
-        }
-        if (check){
-            tempList.add(contactInfo);
-            contactList = tempList;
-            Files.write(file, contactList);
-        }
-    }
-
     public static void main(String[] args) throws IOException {
-
-    String contactFile = "contacts.txt";
-    String contactsDirectory = "contacts";
-    String phoneNumber = "";
-    String contactName;
-
-    Path directory = Paths.get(contactsDirectory);
-    Path file = Paths.get(contactsDirectory, contactFile);
-
-
-       if (Files.notExists(directory)) {
-           Files.createDirectory(directory);
-       }
-
-       if (Files.notExists(file)) {
-           Files.createFile(file);
-       }
-
-       boolean flag = true;
-       List<String> contactList = Files.readAllLines(file);
+        String message = "1. Show All Contacts\n2. Add new contact\n3. Search contacts by name\n4. Delete Contact\n5. Exit\nEnter Choice >";
+        String contactFile = "contacts.txt";
+        String contactsDirectory = "contacts";
+        String phoneNumber = "";
+        String contactName = "";
+        boolean flag = true;
+        Path directory = Paths.get(contactsDirectory);
+        Path file = Paths.get(contactsDirectory, contactFile);
 
 
-       while (flag) {
-           System.out.println("1. Show All Contacts\n2. Add new contact\n3. Search contacts by name\n4. Delete Contact\n5. Exit");
-           Scanner input = new Scanner(System.in);
-           String userSelection = input.nextLine();
-
-           if (userSelection.equalsIgnoreCase("1")){
-               contactList = Files.readAllLines(file);
-               showContacts(contactList);
-           }
-           if (userSelection.equalsIgnoreCase("2")){
-               addContacts(contactList,file,input,phoneNumber);
-           }
-           if (userSelection.equalsIgnoreCase("3")){
-               boolean check = false;
-               System.out.println("Please Enter contact name: ");
-               String searchChoice = input.nextLine();
-               for (String contact : contactList) {
-                   String [] contactArray = contact.split(" : ");
-                   contacts newcontact = new contacts(contactArray[0],contactArray[1]);
-                   contactName = contactArray[0];
-                   if (contactName.equalsIgnoreCase(searchChoice)) {
-                       System.out.printf("Here is your contact, %s%n",contact);
-                       check = true;
-                       break;
-                   }
-               }
-               if (check == false){
-                   System.out.println("Contact could not be found, check spelling.");
-               }
-           }
-           if (userSelection.equalsIgnoreCase("4")){
-               List<String> tempList = new ArrayList<>();
-               System.out.println("Enter a name:");
-               String newContact = input.nextLine();
-
-               for (String contact : contactList) {
-                   String [] contactArray = contact.split(" : ");
-                   contacts newcontact = new contacts(contactArray[0],contactArray[1]);
-                   contactName = contactArray[0];
-                   if (!contactName.equalsIgnoreCase(newContact)) {
-                       tempList.add(contact);
-                   }
-               }
-               contactList = tempList;
-               Files.write(file, tempList);
-           }
-           if (userSelection.equals("5")) {
-               flag = false;
-           }
-       }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        if (Files.notExists(directory)) {
+            Files.createDirectory(directory);
+        }
+        if (Files.notExists(file)) {
+            Files.createFile(file);
+        }
+        List<String> contactList = Files.readAllLines(file);
+        while (flag) {
+            System.out.print(message);
+            Scanner input = new Scanner(System.in);
+            String userSelection = input.nextLine();
+            boolean check1 = true;
+            while(check1){
+                switch (userSelection) {
+                    case "1" -> {
+                        contactList = Files.readAllLines(file);
+                        showContacts(contactList);
+                        check1 = false;
+                    }
+                    case "2" -> {
+                        contactList = Files.readAllLines(file);
+                        addContacts(contactList, file, input, phoneNumber);
+                        check1 = false;
+                    }
+                    case "3" -> {
+                        contactList = Files.readAllLines(file);
+                        searchContact(contactList, contactName, input);
+                        check1 = false;
+                    }
+                    case "4" -> {
+                        contactList = Files.readAllLines(file);
+                        deleteContact(contactList, input, contactName, file);
+                        check1 = false;
+                    }
+                    case "5" -> {
+                        System.out.println("Goodbye!");
+                        flag = false;
+                        check1 = false;
+                    }
+                    default -> {
+                        System.out.println("Invalid choice, try again");
+                        System.out.println(message);
+                        userSelection =input.nextLine();
+                    }
+                }
+            }
+        }
     }
-
-
-
-
-
-
-
-
 }
